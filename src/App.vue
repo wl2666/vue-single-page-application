@@ -1,32 +1,117 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view />
+    <Navigation
+      :user="user"
+      @logout="logout" />
+    <router-view
+      clas="container"
+      :user="user"
+      :meetings="meetings"
+      :error="error"
+      @logout="logout"
+      @addMeeting="addMeeting"
+      @deleteMeeting="deleteMeeting"
+      @checkIn="checkIn" />
   </div>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+import Navigation from "@/components/Navigation.vue";
+import Firebase from "firebase";
+import db from "./db.js";
 
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
+export default {
+  name: "App",
+  data: function () {
+    return {
+      user: null,
+      error: null,
+      meetings: []
     }
+  },
+  methods: {
+    logout: function() {
+      Firebase.auth()
+      .signOut()
+      .then(() => {
+        this.user =null;
+        this.$router.push("login");
+      })
+    },
+    addMeeting: function(payload) {
+      db.collection("users")
+      .doc(this.user.uid)
+      .collection("meetings")
+      .add({
+        name: payload,
+        createdAt: Firebase.firestore.FieldValue.serverTimestamp()
+      });
+    },
+    deleteMeeting: function(payload) {
+      db.collection("users")
+      .doc(this.user.uid)
+      .collection("meetings")
+      .doc(payload)
+      .delete();
+    },
+    checkIn: function(payload) {
+      db.collection("users")
+      .doc(payload.userID)
+      .collection("meetings")
+      .doc(payload.meetingID)
+      .get()
+      .then(doc => {
+        if (doc.exists) {
+          db.collection("users")
+          .doc(payload.userID)
+          .collection("meetings")
+          .doc(payload.meetingID)
+          .collection("attendees")
+          .add({
+            displayName: payload.displayName,
+            email: payload.email,
+            createdAt: Firebase.firestore.FieldValue.serverTimestamp()
+          })
+          .then(() => this.$router.push("/attendees/" + payload.userID + '/' + payload.meetingID))
+        } else {
+          this.error = "Sorry, no such meeting."
+        }
+      })
+    }
+  },
+  mounted() {
+    Firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        this.user = user;
+
+        db.collection("users")
+        .doc(this.user.uid)
+        .collection("meetings")
+        .onSnapshot(snapshot => {
+          const snapData = [];
+          snapshot.forEach(doc => {
+            snapData.push({
+              id: doc.id,
+              name: doc.data().name
+            });
+          });
+          this.meetings = snapData.sort((a,b) => {
+            if (a.name.toLowerCase() - b.name.toLowerCase) {
+              return -1;
+            } else {
+              return 1;
+            }
+          });
+        });
+      }
+    });
+  },
+  components: {
+    Navigation
   }
-}
+};
+</script>
+<style lang="scss">
+$primary: #05b2dd;
+@import "node_modules/bootstrap/scss/bootstrap";
 </style>
