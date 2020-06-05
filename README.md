@@ -1,4 +1,4 @@
-# vue-spas
+# task-management-system
 
 ## Project setup
 ```
