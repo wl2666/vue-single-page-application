@@ -73,7 +73,7 @@ export default {
                 displayName: info.displayName
               })
               .then(() => {
-                this.$router.replace('meetings');
+                this.$router.replace('projects');
               });
             },
             error => {

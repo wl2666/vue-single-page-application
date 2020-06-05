@@ -6,11 +6,11 @@
     <router-view
       clas="container"
       :user="user"
-      :meetings="meetings"
+      :projects="projects"
       :error="error"
       @logout="logout"
-      @addMeeting="addMeeting"
-      @deleteMeeting="deleteMeeting"
+      @addProject="addProject"
+      @deleteProject="deleteProject"
       @checkIn="checkIn" />
   </div>
 </template>
@@ -26,7 +26,7 @@ export default {
     return {
       user: null,
       error: null,
-      meetings: []
+      projects: []
     }
   },
   methods: {
@@ -38,43 +38,43 @@ export default {
         this.$router.push("login");
       })
     },
-    addMeeting: function(payload) {
+    addProject: function(payload) {
       db.collection("users")
       .doc(this.user.uid)
-      .collection("meetings")
+      .collection("projects")
       .add({
         name: payload,
         createdAt: Firebase.firestore.FieldValue.serverTimestamp()
       });
     },
-    deleteMeeting: function(payload) {
+    deleteProject: function(payload) {
       db.collection("users")
       .doc(this.user.uid)
-      .collection("meetings")
+      .collection("projects")
       .doc(payload)
       .delete();
     },
     checkIn: function(payload) {
       db.collection("users")
       .doc(payload.userID)
-      .collection("meetings")
-      .doc(payload.meetingID)
+      .collection("projects")
+      .doc(payload.projectID)
       .get()
       .then(doc => {
         if (doc.exists) {
           db.collection("users")
           .doc(payload.userID)
-          .collection("meetings")
-          .doc(payload.meetingID)
-          .collection("attendees")
+          .collection("projects")
+          .doc(payload.projectID)
+          .collection("participants")
           .add({
             displayName: payload.displayName,
             email: payload.email,
             createdAt: Firebase.firestore.FieldValue.serverTimestamp()
           })
-          .then(() => this.$router.push("/attendees/" + payload.userID + '/' + payload.meetingID))
+          .then(() => this.$router.push("/participants/" + payload.userID + '/' + payload.projectID))
         } else {
-          this.error = "Sorry, no such meeting."
+          this.error = "Sorry, no such project."
         }
       })
     }
@@ -86,7 +86,7 @@ export default {
 
         db.collection("users")
         .doc(this.user.uid)
-        .collection("meetings")
+        .collection("projects")
         .onSnapshot(snapshot => {
           const snapData = [];
           snapshot.forEach(doc => {
@@ -95,7 +95,7 @@ export default {
               name: doc.data().name
             });
           });
-          this.meetings = snapData.sort((a,b) => {
+          this.projects = snapData.sort((a,b) => {
             if (a.name.toLowerCase() - b.name.toLowerCase) {
               return -1;
             } else {

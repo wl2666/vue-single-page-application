@@ -62,7 +62,7 @@ export default {
     handleCheckIn: function() {
       this.$emit("checkIn", {
         userID: this.$route.params.userID,
-        meetingID: this.$route.params.meetingID,
+        projectID: this.$route.params.projectID,
         displayName: this.displayName,
         email: this.email
       })

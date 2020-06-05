@@ -5,13 +5,13 @@
         <router-link
           class="navbar-brand"
           to="/"
-          >Meeting Log</router-link>
+          >Home</router-link>
         <div class="navbar-nav ml-auto">
           <router-link
             class="nav-item nav-link"
-            to="/meetings"
+            to="/projects"
             v-if="user"
-            >meetings</router-link>
+            >projects</router-link>
           <router-link
             class="nav-item nav-link"
             to="/login"

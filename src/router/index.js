@@ -2,10 +2,10 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import Login from "../views/Login.vue";
-import Meetings from "../views/Meetings.vue";
+import Projects from "../views/Projects.vue";
 import Register from "../views/Register.vue";
 import CheckIn from "../views/CheckIn.vue";
-import Attendees from "../views/Attendees.vue";
+import Participants from "../views/Participants.vue";
 
 Vue.use(VueRouter);
 
@@ -21,9 +21,9 @@ const routes = [
     component: Login
   },
   {
-    path: "/meetings",
-    name: "meetings",
-    component: Meetings
+    path: "/projects",
+    name: "projects",
+    component: Projects
   },
   {
     path: "/register",
@@ -31,14 +31,14 @@ const routes = [
     component: Register
   },
   {
-    path: "/checkin/:userID/:meetingID",
+    path: "/checkin/:userID/:projectID",
     name: "CheckIn",
     component: CheckIn
   },
   {
-    path: "/attendees/:userID/:meetingID",
-    name: "Attendees",
-    component: Attendees
+    path: "/participants/:userID/:projectID",
+    name: "Participants",
+    component: Participants
   },
   {
     path: "*",

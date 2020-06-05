@@ -6,19 +6,14 @@
         <span class="font-weight-bold text-info">{{user.displayName}}</span>, <a href="#" role="button" class="text-primary" @click="$emit('logout')">logout</a>
       </div>
     </div>
+    <hr>
     <div class="container text-center">
       <div class="row justify-content-center">
         <div class="col-10 col-md-10 col-lg-8 col-xl-7">
-          <h4 class="display-4 text-primary mb-2">Meeting Log</h4>
+          <h4 class="display-4 text-primary mb-2">Projects Dashboard</h4>
           <p class="lead">
-            This simple app creates meetings, allows people to check in, and
-            picks random users to award giveaways. It's a good example of a
-            Single Page Application which includes connection to a database and
-            routing. It's a practical way to learn
-            <a href="https://vuejs.org/">Vue.js</a>
-            with
-            <a href="https://firebase.google.com">Firebase</a>.
-            <!-- <font-awesome-icon class="text-primary" icon="star"></font-awesome-icon> -->
+            This simple management application is to help you organize your projects when you pursue your degree at TC, allowing you to
+            track certain task sets and finish your tasks on time!
           </p>
 
           <router-link
@@ -33,9 +28,9 @@
           >Log In</router-link>
           <router-link
             class="btn btn-primary"
-            to="/meetings"
+            to="/projects"
             v-if="user"
-          >Meetings</router-link>
+          >Projects</router-link>
         </div>
       </div>
     </div>

@@ -65,7 +65,7 @@ export default {
         .signInWithEmailAndPassword(info.email, info.password)
         .then(
           ()=> {
-            this.$router.push("meetings");
+            this.$router.push("projects");
           }, error => {
             this.error = error.message;
           }

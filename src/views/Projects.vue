@@ -4,7 +4,7 @@
       <div class="col-12 col-md-9 col-lg-7">
         <h1
           class="font-weight-light text-center"
-        >Add a Meeting</h1>
+        >Add a Project</h1>
 
         <div class="card bg-light">
           <div class="card-body text-center">
@@ -13,11 +13,11 @@
                 <input
                   type="text"
                   class="form-control"
-                  name="meetingName"
-                  placeholder="Meeting name"
+                  name="projectName"
+                  placeholder="Project name"
                   aria-describedby="buttonAdd"
-                  v-model="meetingName"
-                  ref="meetingName"
+                  v-model="projectName"
+                  ref="projectName"
                 />
                 <div class="input-group-append">
                   <button
@@ -39,21 +39,21 @@
       <div class="col-11 col-md-8 col-lg-6">
         <div class="card border-top-0 rounded-0">
           <div class="card-body py-2">
-            <h4 class="card-title m-0 text-center">Your Meetings</h4>
+            <h4 class="card-title m-0 text-center">Your Projects</h4>
           </div>
           <div class="list-group list-group-flush">
             <div
               class="list-group-item d-flex"
-                v-for="item in meetings"
+                v-for="item in projects"
                 :key="item.id">
               <section
                 class="btn-group align-self-center"
                 role="group"
-                aria-label="Meeting Options">
+                aria-label="Project Options">
                 <button
                   class="btn btn-sm btn-outline-secondary"
-                  title="Delete Meeting"
-                  @click="$emit('deleteMeeting', item.id)">
+                  title="Delete Project"
+                  @click="$emit('deleteProject', item.id)">
                   <font-awesome-icon icon="trash"></font-awesome-icon>
                 </button>
 
@@ -66,8 +66,8 @@
 
                 <router-link
                   class="btn btn-sm btn-outline-secondary"
-                  title="Attendees"
-                  :to="'/attendees/'+ user.uid + '/' + item.id">
+                  title="Participants"
+                  :to="'/participants/'+ user.uid + '/' + item.id">
                   <font-awesome-icon icon="list-ul"></font-awesome-icon>
                 </router-link>
               </section>
@@ -86,10 +86,10 @@
 <script>
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome"
 export default {
-  name: "meetings",
+  name: "projects",
   data: function() {
     return {
-      meetingName: null
+      projectName: null
     }
   },
   components:{
@@ -97,11 +97,11 @@ export default {
   },
   methods: {
     handleAdd: function() {
-      this.$emit("addMeeting", this.meetingName);
-      this.meetingName = null;
-      this.$refs.meetingName.focus();
+      this.$emit("addProject", this.projectName);
+      this.projectName = null;
+      this.$refs.projectName.focus();
     }
   },
-  props: ["user", "meetings"]
+  props: ["user", "projects"]
 }
 </script>
