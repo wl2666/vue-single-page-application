@@ -8,7 +8,7 @@ import firebase from "firebase";
     projectId: "vue-spas-exercise",
     storageBucket: "vue-spas-exercise.appspot.com",
     messagingSenderId: "400142666998",
-    appId: "1:400142666998:web:6bba42daa1d14997c2b0d7"
+    appId: "1:400142666998:web:3f5a195d43493e15c2b0d7"
   };
   // Initialize Firebase
   const firebaseApp = firebase.initializeApp(firebaseConfig);

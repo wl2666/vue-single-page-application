@@ -3,7 +3,7 @@
   <div class="row justify-content-center">
     <div class="col-md-8"
       v-if=" user !== null && user.uid == userID">
-      <h1 class="font-weight-light text-center">Participants</h1>
+      <h1 class="font-weight-light text-center"><span v-if="projectName">{{ projectName }}'s</span> Participants</h1>
 
       <div class="card bg-light mb-4">
         <div class="card-body text-center">
@@ -71,7 +71,8 @@ export default {
       displayParticipants: [],
       searchQuery: "",
       userID: this.$route.params.userID,
-      projectID: this.$route.params.projectID
+      projectID: this.$route.params.projectID,
+      projectName: null
     }
   },
   components: {
@@ -87,9 +88,6 @@ export default {
     chooseRandom: function() {
       const randomParticipant = Math.floor(Math.random() * this.participants.length);
       this.displayParticipants = [this.participants[randomParticipant]];
-      //[add the following comment line to avoid console error from eslintrc.js]
-      // eslint-disable-next-line
-      console.log(this.displayParticipants);
     },
     resetQuery: function() {
       this.displayParticipants = this.participants;
@@ -130,7 +128,7 @@ export default {
       }
     }
   },
-  props: ["user"],
+  props: ["user", "projects"],
   mounted() {
     db.collection("users")
       .doc(this.userID)
@@ -150,6 +148,15 @@ export default {
         this.participants = snapData;
         this.displayParticipants = this.participants;
       });
+
+      //[add the following comment line to avoid console error from eslintrc.js]
+      // eslint-disable-next-line
+      // console.log(this.projects);
+      for(var project of this.projects) {
+        if(project.id == this.projectID) {
+          this.projectName = project.name
+        }
+      }
   }
 }
 </script>
